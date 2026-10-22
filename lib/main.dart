@@ -1,8 +1,9 @@
-import 'package:evently/providers/events_provider.dart';
 import 'package:evently/providers/themes_provider.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/add_event/screen/add_event_screen.dart';
-import 'package:evently/ui/home/screen/edit_screen.dart';
-import 'package:evently/ui/home/screen/event_details_screen.dart';
+import 'package:evently/ui/details_event/screen/detials_event.dart';
+import 'package:evently/ui/edit_event/screen/edit_event_screen.dart';
+import 'package:evently/ui/forget_password/screen/forget_password_screen.dart';
 import 'package:evently/ui/home/screen/home_screen.dart';
 import 'package:evently/ui/onboarding/screen/onboarding_screen.dart';
 import 'package:evently/ui/sign%20in/screen/signin_screen.dart';
@@ -32,9 +33,7 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => ThemeProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => EventsProvider(),
-        ),
+
       ],
       child: MyApp(seenOnboarding: seenOnboarding),
     ),
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
   final bool seenOnboarding;
   const MyApp({super.key, required this.seenOnboarding});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     ThemeProvider provider = Provider.of<ThemeProvider>(context);
@@ -57,13 +56,19 @@ class MyApp extends StatelessWidget {
       themeMode: provider.themeMode,
       routes: {
         RoutesManager.Start:(context)=>StartScreen(),
+        RoutesManager.onboarding:(context)=>OnboardingScreen(),
         RoutesManager.signup:(context)=>SignupScreen(),
         RoutesManager.signin:(context)=>SignInScreen(),
-        RoutesManager.Home:(context)=>HomeScreen(),
-        RoutesManager.onboarding:(context)=>OnboardingScreen(),
+        RoutesManager.forgetPass:(context)=> ForgetPasswordScreen(),
+        RoutesManager.Home:(context)=>ChangeNotifierProvider(
+          create: (context) => UserProvider() ..setUserValue(),
+          child: HomeScreen()
+        ),
         RoutesManager.addEvent:(context)=>AddEventScreen(),
-        RoutesManager.eventDetails: (_) => EventDetailsScreen(),
-        RoutesManager.editEvent: (_) => EditScreen(),
+        RoutesManager.DetailsEvent : (context) => DetialsEvent(),
+        RoutesManager.editEvent : (context) => EditEventScreen(),
+
+
       },
       initialRoute: FirebaseAuth.instance.currentUser != null
           ? RoutesManager.Home

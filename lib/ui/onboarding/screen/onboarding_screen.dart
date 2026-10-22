@@ -1,6 +1,6 @@
 import 'package:evently/core/resources/colors_manager.dart';
+import 'package:evently/core/reusable_components/arrow_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -62,26 +62,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         automaticallyImplyLeading: false,
         leading: currentIndex > 0
             ? Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: IconButton(
-            onPressed: back,
-            style: IconButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+              padding: const EdgeInsets.only(left: 16),
+              child: ArrowIcon(
+              onClick:back ,
+              icon: AssetsManager.arrowLeft
               ),
-            ),
-            icon: SvgPicture.asset(
-              AssetsManager.arrowLeft,
-              width: 20,
-              height: 20,
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.primary,
-                BlendMode.srcIn,
-              ),
-            ),
-          ),
-        )
+            )
         : null,
         title: Image.asset(AssetsManager.logo,
           color: Theme.of(context).colorScheme.primary,

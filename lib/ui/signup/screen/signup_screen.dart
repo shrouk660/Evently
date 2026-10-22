@@ -1,7 +1,8 @@
 import 'package:evently/core/resources/dialod_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import '../../../core/remote/network/firestore_manager.dart';
+import 'package:evently/model/users.dart' as usermodel ;
 import '../../../core/resources/app_constants.dart';
 import '../../../core/resources/assets_manager.dart';
 import '../../../core/resources/google_auth_service.dart';
@@ -175,6 +176,13 @@ class _SignupScreenState extends State<SignupScreen> {
           email: emailController.text,
           password: passController.text
       );
+      FirestoreManager.saveUser(usermodel.Users(
+        id: credential.user?.uid,
+        name: nameController.text ,
+        email: emailController.text,
+        favorites: [],
+
+      ));
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed(RoutesManager.Home);
     }on FirebaseAuthException catch (e){

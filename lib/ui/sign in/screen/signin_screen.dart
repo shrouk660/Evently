@@ -96,6 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(onPressed: (){
+                    Navigator.of(context).pushNamed(RoutesManager.forgetPass);
 
                     },
                     child: Text("Forget Password? ",style:Theme.of(context).textTheme.titleSmall)

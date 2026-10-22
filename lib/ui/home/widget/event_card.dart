@@ -1,25 +1,35 @@
 
+import 'package:evently/core/remote/network/firestore_manager.dart';
+import 'package:evently/core/resources/dialod_utils.dart';
+import 'package:evently/core/resources/routes_manager.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../../../core/resources/assets_manager.dart';
+import '../../../model/event_categories.dart';
 import '../../../model/event_model.dart';
 
-class EventCard extends StatelessWidget {
+class EventCard extends StatefulWidget {
   final EventModel event;
-  final VoidCallback onTap;
 
   const EventCard({
     super.key,
     required this.event,
-    required this.onTap,
+
   });
 
   @override
-  Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+  State<EventCard> createState() => _EventCardState();
+}
 
-    final banner = isDark ? event.bannerDark : event.bannerLight;
+class _EventCardState extends State<EventCard> {
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final category = EventCategories.byTitle(widget.event.category);
+    final date = widget.event.dateAndTime?.toDate() ?? DateTime.now();
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Container(
       height: 220,
@@ -27,13 +37,20 @@ class EventCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary,
+          color: isDark
+              ?Theme.of(context).colorScheme.primary
+              :Theme.of(context).colorScheme.secondary,
           width: 1,
         ),
         borderRadius: BorderRadius.circular(22),
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            RoutesManager.DetailsEvent,
+            arguments: widget.event,
+          );
+        },
         borderRadius: BorderRadius.circular(22),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(21),
@@ -41,13 +58,8 @@ class EventCard extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               Image.asset(
-                banner,
+                isDark ? category.bannerDark : category.bannerLight,
                 fit: BoxFit.fill,
-              ),
-              Container(
-                color: Colors.black.withValues(
-                  alpha: isDark ? 0.35 : 0.20,
-                ),
               ),
               Positioned(
                 top: 10,
@@ -60,12 +72,14 @@ class EventCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: isDark
+                          ?Theme.of(context).colorScheme.primary
+                          :Theme.of(context).colorScheme.secondary,
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${event.date.day} ${_monthName(event.date.month)}',
+                      '${date.day} ${_monthName(date.month)}',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 18,
@@ -86,7 +100,9 @@ class EventCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: isDark
+                          ?Theme.of(context).colorScheme.primary
+                          :Theme.of(context).colorScheme.secondary,
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -94,7 +110,7 @@ class EventCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          event.title,
+                          widget.event.title ?? '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -105,11 +121,18 @@ class EventCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      SvgPicture.asset(
-                        AssetsManager.heart,
-                        width: 26,
-                        height: 26,
-                      ),
+                       IconButton(
+                         onPressed: (){
+                           heartCliced(userProvider);
+                         },
+                         icon:  SvgPicture.asset(
+                           userProvider.user?.favorites?.contains(widget.event.id!)?? false
+                               ?AssetsManager.heart_selected
+                               :AssetsManager.heart,
+                          width: 26,
+                          height: 26,
+                         ),
+                       ),
                     ],
                   ),
                 ),
@@ -128,5 +151,30 @@ class EventCard extends StatelessWidget {
     ];
 
     return months[month - 1];
+  }
+
+  heartCliced(UserProvider userProvider )async{
+    if(userProvider.user?.favorites?.contains(widget.event.id!)??false){
+      DialodUtils.showLoadingDialog(context);
+      await FirestoreManager.deleteEventFavorite(widget.event);
+      userProvider.user?.favorites?.remove(widget.event.id!);
+      await FirestoreManager.updateUser(userProvider.user?.favorites??[]);
+      Navigator.of(context).pop();
+      SnackBar snackBar = SnackBar(content: Text("Event removed from your favorite"),);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+    }else{
+      DialodUtils.showLoadingDialog(context);
+      await FirestoreManager.addEventFavorite(widget.event);
+      userProvider.user?.favorites?.add(widget.event.id!);
+      await FirestoreManager.updateUser(userProvider.user?.favorites??[]);
+      Navigator.of(context).pop();
+      SnackBar snackBar = SnackBar(content: Text("Event added to your favorite"),);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    setState(() {
+
+    });
+
   }
 }

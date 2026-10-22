@@ -5,7 +5,8 @@ abstract final class RoutesManager {
   static const String Home = "/home";
   static const String onboarding = "/onboarding";
   static const String addEvent = "/addevent";
-  static const String eventDetails = "/eventdetails";
+  static const String DetailsEvent = "/detailsevent";
   static const String editEvent = "/editevent";
+  static const String forgetPass = "/forgetPass";
 
 }

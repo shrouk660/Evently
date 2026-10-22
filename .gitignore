@@ -46,3 +46,12 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+serviceAccountKey.json
+.env
+*.jks
+*.keystore
+firebase-debug.log
+
+firebase_options.dart
+google-services.json

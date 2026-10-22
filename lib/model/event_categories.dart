@@ -15,4 +15,14 @@ abstract final class EventCategories {
     (title: "Exhibition", icon: AssetsManager.exhibitionIcon, bannerLight: AssetsManager.exhibition_light, bannerDark: AssetsManager.exhibition_dark),
     (title: "Book club", icon: AssetsManager.bookIcon, bannerLight: AssetsManager.book_light, bannerDark: AssetsManager.book_dark),
   ];
+  static final List<({String title, String icon})> withAll = [
+    (title: "All", icon: AssetsManager.allIcon),
+    for (final categories in all) (title: categories.title, icon: categories.icon),
+  ];
+  static EventCategory byTitle(String? title) {
+    return all.firstWhere(
+          (c) => c.title == title,
+      orElse: () => all.first,
+    );
+  }
 }

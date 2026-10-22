@@ -7,12 +7,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../providers/themes_provider.dart';
+import '../../../../providers/user_provider.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -29,13 +31,17 @@ class ProfileTab extends StatelessWidget {
                    backgroundImage: AssetImage(AssetsManager.route),
                  ),
                 SizedBox(height: 16,),
-                Text(
-                  "John Safwat",
+                userProvider.user == null
+                    ?Center(child: CircularProgressIndicator(),)
+                    :Text(
+                    userProvider.user?.name??"",
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 SizedBox(height: 4,),
-                Text(
-                  "johnsafwat.route@gmail.com",
+                userProvider.user == null
+                    ?Center(child: CircularProgressIndicator(),)
+                    :Text(
+                  userProvider.user?.email??"",
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14),
                 ),
                 SizedBox(height: screenHeight * 0.04,),

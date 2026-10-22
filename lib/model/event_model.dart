@@ -1,43 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class EventModel {
-  final String title;
-  final String description;
-  final String category;
-  final DateTime date;
-  final int hour;
-  final int minute;
-  final String bannerLight;
-  final String bannerDark;
+   String? id;
+   String? userId;
+   String? title;
+   String? description;
+   String? category;
+   Timestamp? dateAndTime;
+
 
   EventModel({
-    required this.title,
-    required this.description,
-    required this.category,
-    required this.date,
-    required this.hour,
-    required this.minute,
-    required this.bannerLight,
-    required this.bannerDark,
+     this.id,
+     this.userId,
+     this.title,
+     this.description,
+     this.category,
+     this.dateAndTime,
   });
-
-  EventModel copyWith({
-    String? title,
-    String? description,
-    String? category,
-    DateTime? date,
-    int? hour,
-    int? minute,
-    String? bannerLight,
-    String? bannerDark,
-  }) {
-    return EventModel(
-      title: title ?? this.title,
-      description: description ?? this.description,
-      category: category ?? this.category,
-      date: date ?? this.date,
-      hour: hour ?? this.hour,
-      minute: minute ?? this.minute,
-      bannerLight: bannerLight ?? this.bannerLight,
-      bannerDark: bannerDark ?? this.bannerDark,
-    );
+  EventModel.fromFireStore(Map<String,dynamic>? data){
+    id = data?["id"];
+    userId = data?["userId"];
+    title = data?["title"];
+    description = data?["description"];
+    category = data?["category"];
+    dateAndTime = data?["dateAndTime"];
+  }
+  Map <String,dynamic> toFirStore(){
+    return{
+      "id" : id,
+      "userId" : userId,
+      "title" : title,
+      "description" : description,
+      "category" : category,
+      "dateAndTime" : dateAndTime,
+    };
   }
 }
