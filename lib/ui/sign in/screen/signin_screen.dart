@@ -63,14 +63,14 @@ class _SignInScreenState extends State<SignInScreen> {
                 CustomField(
                   validation: (value) {
                     if(value==null || value.isEmpty){
-                      return "Email can't empty";
+                      return StringsManager.emailCantEmpty;
                     }
                     if(!RegExp(AppConstants.emailRegex).hasMatch(value)){
-                      return "Invalid email";
+                      return StringsManager.invalidEmail;
                     }
                     return null;
                   },
-                  hint: "Enter your email",
+                  hint: StringsManager.enterYourEmail,
                   prefixPath: AssetsManager.email,
                   controller: emailController,
                   keyboard: TextInputType.emailAddress,
@@ -79,15 +79,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 CustomField(
                   validation: (value) {
                     if(value==null || value.isEmpty){
-                      return "Password can't empty";
+                      return StringsManager.passwordCantEmpty;
                     }
                     if(value.length<8){
-                      return "Password can't be less than 8 characters";
+                      return StringsManager.passwordCantBeLessThan8Characters;
                     }
                     return null;
                   },
                   isPassword: true,
-                  hint: "Enter your password",
+                  hint: StringsManager.enterYourPassword,
                   prefixPath: AssetsManager.lock,
                   controller: passController,
                   keyboard: TextInputType.text,
@@ -99,11 +99,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.of(context).pushNamed(RoutesManager.forgetPass);
 
                     },
-                    child: Text("Forget Password? ",style:Theme.of(context).textTheme.titleSmall)
+                    child: Text(StringsManager.forgetPassword,style:Theme.of(context).textTheme.titleSmall)
                   ),
                 ),
                 SizedBox(height: 48,),
-                CustomButton(title: "Login", onClick: () {
+                CustomButton(title: StringsManager.login, onClick: () {
                   if(formKey.currentState?.validate()??false){
                     SignIn();
                   }
@@ -112,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don’t have an account ?",style: Theme
+                    Text(StringsManager.dontHaveAnAccount,style: Theme
                         .of(context)
                         .textTheme
                         .bodySmall?.copyWith(
@@ -125,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         onPressed: (){
                           Navigator.of(context).pushReplacementNamed(RoutesManager.signup);
                         },
-                        child: Text("Signup",style:Theme.of(context).textTheme.titleSmall)
+                        child: Text(StringsManager.signup,style:Theme.of(context).textTheme.titleSmall)
                     ),
                   ],
                 ),
@@ -133,7 +133,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Ordivider(),
                 SizedBox(height: 24,),
                 GoogleButton(
-                  title: "Login with Google",
+                  title: StringsManager.loginWithGoogle,
                   onClick: googleSignIn,
                 )
               ],
@@ -155,10 +155,10 @@ class _SignInScreenState extends State<SignInScreen> {
       Navigator.of(context).pushReplacementNamed(RoutesManager.Home);
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
-      if (e.code == 'user-not-found') {
-        DialodUtils.showMassageDialog(context: context, content: 'No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        DialodUtils.showMassageDialog(context: context, content: 'Wrong password provided for that user.');
+      if (e.code == StringsManager.userNotFound) {
+        DialodUtils.showMassageDialog(context: context, content: StringsManager.noUserFoundForThatEmail);
+      } else if (e.code == StringsManager.wrongPassword) {
+        DialodUtils.showMassageDialog(context: context, content: StringsManager.wrongPasswordProvidedForThatUser);
       }
       print(e.toString());
     }
@@ -174,7 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (!mounted) return;
       DialodUtils.showMassageDialog(
         context: context,
-        content: "Google sign in failed",
+        content: StringsManager.googleSignInFailed,
       );
       print(e.toString());
     }

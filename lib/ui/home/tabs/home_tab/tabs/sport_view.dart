@@ -1,3 +1,4 @@
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:evently/ui/home/widget/event_card.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/remote/network/firestore_manager.dart';
@@ -29,7 +30,7 @@ class SportView extends StatelessWidget {
         }
         List<EventModel> events = snapshot.data??[];
         if(events.isEmpty){
-          return Center(child: Text("No events found",style: Theme.of(context).textTheme.bodyMedium,),);
+          return Center(child: Text(StringsManager.noEventsFound,style: Theme.of(context).textTheme.bodyMedium,),);
         }
         return ListView.separated(
           itemBuilder:(context, index) => EventCard(event: events[index]) ,

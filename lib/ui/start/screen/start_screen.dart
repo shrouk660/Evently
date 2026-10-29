@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/resources/routes_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,6 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-  String  selectedLang = "en";
   @override
   Widget build(BuildContext context) {
     ThemeProvider provider = Provider.of<ThemeProvider>(context);
@@ -48,9 +48,23 @@ class _StartScreenState extends State<StartScreen> {
                     fontWeight: FontWeight.w500
                 ),),
                 Spacer(),
-                LanguageSwitch(title: "English",languageCode: "en",selectedLanguage: selectedLang,),
+                LanguageSwitch(
+                  title: "English",
+                  languageCode: "en",
+                  selectedLanguage: context.locale.languageCode,
+                  onClicked:(){
+                    context.setLocale(Locale("en"));
+                  } ,
+                ),
                 SizedBox(width: 8,),
-                LanguageSwitch(title: "Arabic",languageCode: "ar",selectedLanguage: selectedLang,),
+                LanguageSwitch(
+                  title: "Arabic",
+                  languageCode: "ar",
+                  selectedLanguage: context.locale.languageCode,
+                  onClicked: (){
+                    context.setLocale(Locale("ar"));
+                  },
+                ),
 
               ],
             ),

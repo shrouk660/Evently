@@ -1,4 +1,5 @@
 import 'package:evently/core/resources/routes_manager.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,13 +23,13 @@ class _DetialsEventState extends State<DetialsEvent> {
     final event = ModalRoute.of(context)!.settings.arguments as EventModel;
     final isOwner = event.userId == FirebaseAuth.instance.currentUser?.uid;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final category = EventCategories.byTitle(event.category);
+    final category = EventCategories.byId(event.category);
     final date = event.dateAndTime?.toDate();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
+          padding: const EdgeInsetsDirectional.only(start: 16),
           child: ArrowIcon(
             onClick: (){
               Navigator.of(context).pop();
@@ -36,7 +37,7 @@ class _DetialsEventState extends State<DetialsEvent> {
             icon:  AssetsManager.arrowLeft,
           ),
         ),
-        title: Text("Event details",
+        title: Text(StringsManager.eventDetails,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
         ),
         actions:isOwner
@@ -52,7 +53,7 @@ class _DetialsEventState extends State<DetialsEvent> {
           ),
           SizedBox(width:8 ,),
           Padding(
-            padding: const EdgeInsets.only(right:  16),
+            padding: const EdgeInsetsDirectional.only(end: 16),
             child: ArrowIcon(
                 onClick: (){
                   deleteEvent(event);
@@ -150,7 +151,7 @@ class _DetialsEventState extends State<DetialsEvent> {
                 ),
               ),
               const SizedBox(height: 16),
-              Text("Description", style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              Text(StringsManager.description, style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: .w500,
                   fontSize: 16
               )),
@@ -181,17 +182,17 @@ class _DetialsEventState extends State<DetialsEvent> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Delete event"),
-        content: const Text("Are you sure you want to delete this event?"),
+        title:  Text(StringsManager.deleteEvent),
+        content: Text(StringsManager.areYouSureYouWantToDeleteThisEvent),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text("Cancel"),
+            child: Text(StringsManager.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
-              "Delete",
+              StringsManager.delete,
               style: TextStyle(color: ColorsManager.deleteColor),
             ),
           ),
@@ -205,12 +206,12 @@ class _DetialsEventState extends State<DetialsEvent> {
       if (!mounted) return;
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Event deleted successfully")),
+         SnackBar(content: Text(StringsManager.eventDeletedSuccessfully)),
       );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to delete: $e")),
+        SnackBar(content: Text("${StringsManager.failedToDelete} $e")),
       );
     }
   }

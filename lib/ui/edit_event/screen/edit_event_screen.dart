@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/core/remote/network/firestore_manager.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/resources/assets_manager.dart';
@@ -21,7 +22,7 @@ class EditEventScreen extends StatefulWidget {
 
 class _EditEventScreenState extends State<EditEventScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  static const categories = EventCategories.all;
+  static  List<EventCategory> get  categories => EventCategories.all;
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   int selectedTap = 0;
@@ -69,7 +70,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
       appBar: AppBar(
         centerTitle: true,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
+          padding: const EdgeInsetsDirectional.only(start: 16),
           child: ArrowIcon(
             onClick: (){
               Navigator.of(context).pop();
@@ -77,7 +78,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
             icon:  AssetsManager.arrowLeft,
           ),
         ),
-        title: Text("Edit event",
+        title: Text(StringsManager.editEvent,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
         ),
       ),
@@ -154,7 +155,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           },
                         ),
                         const SizedBox(height: 16),
-                        Text("Title",
+                        Text(StringsManager.title,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: .w500,
                             fontSize: 16
@@ -164,15 +165,15 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           controller: titleController,
                           validation: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return "Title can't be empty";
+                              return StringsManager.titleCantBeEmpty;
                             }
                             return null;
                           },
-                          hint: "Event Title",
+                          hint: StringsManager.eventTitle,
                           keyboard: TextInputType.text,
                         ),
                         const SizedBox(height: 16),
-                        Text("Description", style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        Text(StringsManager.description, style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: .w500,
                             fontSize: 16
                         )),
@@ -181,11 +182,11 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           controller: descriptionController,
                           validation: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return "Description can't be empty";
+                              return StringsManager.descriptionCantBeEmpty;
                             }
                             return null;
                           },
-                          hint: "Event Description...",
+                          hint: StringsManager.eventDescription,
                           keyboard: TextInputType.multiline,
                           maxLines: 5,
                         ),
@@ -201,7 +202,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         ),
                         const SizedBox(height: 24),
                         CustomButton(
-                          title: "Update event",
+                          title: StringsManager.updateEvent,
                           onClick: updateEvent,
                         ),
 
@@ -218,7 +219,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   Future<void>updateEvent()async{
     if(!formKey.currentState!.validate())return;
     if(selectedDate == null || selectedTime == null){
-      SnackBar snackBar = SnackBar(content: Text("Date and time are required"),);
+      SnackBar snackBar = SnackBar(content: Text(StringsManager.dateAndTimeAreRequired),);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
@@ -238,11 +239,11 @@ class _EditEventScreenState extends State<EditEventScreen> {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
 
-      SnackBar snackBar = SnackBar(content: Text("Event Updated successfully"),);
+      SnackBar snackBar = SnackBar(content: Text(StringsManager.eventUpdatedSuccessfully),);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }catch(e){
       if(!mounted)return;
-      SnackBar snackBar = SnackBar(content: Text("Failed to update : $e"),);
+      SnackBar snackBar = SnackBar(content: Text("${StringsManager.failedToUpdate} $e"),);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 

@@ -1,3 +1,4 @@
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -34,7 +35,7 @@ class _TimeState extends State<Time> {
         ),
         const SizedBox(width: 8),
         Text(
-          'Event Time',
+          StringsManager.eventTime,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 16,
@@ -46,7 +47,7 @@ class _TimeState extends State<Time> {
             chooseTime();
           },
           child: Text(selectedTime == null
-              ? 'Choose time'
+              ? StringsManager.chooseTime
               : selectedTime!.format(context),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.primary,

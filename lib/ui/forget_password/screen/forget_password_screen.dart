@@ -1,4 +1,5 @@
 import 'package:evently/core/resources/assets_manager.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:evently/core/reusable_components/arrow_icon.dart';
 import 'package:evently/core/reusable_components/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class ForgetPasswordScreen extends StatelessWidget {
             onClick: Navigator.of(context).pop,
           ),
         ),
-        title: Text("Forget Password",
+        title: Text(StringsManager.ForgetPassword,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
         ),
       ),
@@ -33,7 +34,7 @@ class ForgetPasswordScreen extends StatelessWidget {
             ),
             SizedBox(height: 45,),
             CustomButton(
-                title: "Reset password",
+                title: StringsManager.resetPassword,
                 onClick: (){
 
                 }

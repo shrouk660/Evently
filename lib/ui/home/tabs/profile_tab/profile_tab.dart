@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/resources/assets_manager.dart';
 import 'package:evently/core/resources/routes_manager.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:evently/ui/home/tabs/profile_tab/widget/settings_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +48,7 @@ class ProfileTab extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.04,),
                 SettingsTile(
-                  title: "Dark mode",
+                  title: StringsManager.darkMode,
                   icon: Switch(
                     value: Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark,
                     onChanged: (value) {
@@ -57,18 +59,19 @@ class ProfileTab extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.015),
                 SettingsTile(
-                  title: "Language",
+                  title: StringsManager.language,
                   icon: SvgPicture.asset(AssetsManager.arrowRight,width: 24,
-                    height: 24,
+                    height: 24, matchTextDirection: true
                   ),
                   onTap: (){
+                    _showLanguageSheet(context);
 
                   },
                 ),
                 SizedBox(height: screenHeight * 0.015),
                 SettingsTile(
-                  title: "Logout",
-                  icon: SvgPicture.asset(AssetsManager.logout),
+                  title: StringsManager.logout,
+                  icon: SvgPicture.asset(AssetsManager.logout,matchTextDirection: true),
                   onTap: () {
                      FirebaseAuth.instance.signOut();
                      Navigator.of(context).pushReplacementNamed(RoutesManager.signin);
@@ -79,6 +82,41 @@ class ProfileTab extends StatelessWidget {
             ),
           ),
       ),
+    );
+  }
+  void _showLanguageSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        final current = context.locale.languageCode;
+
+        Widget option(String label, String code) {
+          final selected = current == code;
+          return ListTile(
+            title: Text(label),
+            trailing: selected ? const Icon(Icons.check) : null,
+            onTap: () async {
+              await context.setLocale(Locale(code));
+              if (sheetContext.mounted) Navigator.pop(sheetContext);
+            },
+          );
+        }
+
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              option('English', 'en'),
+              option('العربية', 'ar'),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/remote/network/firestore_manager.dart';
 import 'package:evently/core/resources/dialod_utils.dart';
 import 'package:evently/core/resources/routes_manager.dart';
@@ -27,7 +28,7 @@ class _EventCardState extends State<EventCard> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final category = EventCategories.byTitle(widget.event.category);
+    final category = EventCategories.byId(widget.event.category);
     final date = widget.event.dateAndTime?.toDate() ?? DateTime.now();
     UserProvider userProvider = Provider.of<UserProvider>(context);
 
@@ -79,7 +80,7 @@ class _EventCardState extends State<EventCard> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                      '${date.day} ${_monthName(date.month)}',
+                    "${DateFormat.d().format(widget.event.dateAndTime!.toDate())} ${DateFormat.MMM().format(widget.event.dateAndTime!.toDate())}",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 18,
@@ -143,16 +144,6 @@ class _EventCardState extends State<EventCard> {
       ),
     );
   }
-
-  String _monthName(int month) {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-    ];
-
-    return months[month - 1];
-  }
-
   heartCliced(UserProvider userProvider )async{
     if(userProvider.user?.favorites?.contains(widget.event.id!)??false){
       DialodUtils.showLoadingDialog(context);

@@ -11,7 +11,7 @@ class OnboardingModel {
     required this.description
   });
 }
-const List<OnboardingModel> onboardingModel =[
+ List<OnboardingModel> onboardingModel =[
   OnboardingModel(
     image: AssetsManager.onboarding1,
     title: StringsManager.titleOnboarding1,

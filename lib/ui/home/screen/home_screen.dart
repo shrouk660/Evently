@@ -1,6 +1,7 @@
 import 'package:evently/core/resources/assets_manager.dart';
 import 'package:evently/core/resources/colors_manager.dart';
 import 'package:evently/core/resources/routes_manager.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:evently/ui/home/tabs/favorite_tab/favorite_tab.dart';
 import 'package:evently/ui/home/tabs/home_tab/home_tab.dart';
 import 'package:evently/ui/home/tabs/profile_tab/profile_tab.dart';
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex:selectedIndex ,
           items: [
             BottomNavigationBarItem(
-              label: "Home",
+              label: StringsManager.home,
                 icon:SvgPicture.asset(
                     AssetsManager.home,
                     colorFilter: ColorFilter.mode(
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
             ),
             BottomNavigationBarItem(
-              label: "Favorite",
+              label: StringsManager.favorite,
                 icon:SvgPicture.asset(
                     AssetsManager.heart,
                     colorFilter: ColorFilter.mode(
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
             ),
             BottomNavigationBarItem(
-              label: "Profile",
+              label: StringsManager.profile,
                 icon:SvgPicture.asset(
                     AssetsManager.profile,
                     colorFilter: ColorFilter.mode(

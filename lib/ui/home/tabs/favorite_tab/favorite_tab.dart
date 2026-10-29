@@ -1,9 +1,10 @@
 import 'package:evently/core/resources/assets_manager.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/remote/network/firestore_manager.dart';
-import '../../../../model/event_model.dart';
+
 import '../../widget/event_card.dart';
 
 class FavoriteTab extends StatefulWidget {
@@ -33,7 +34,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
               controller: searchController,
               onChanged: (value) => setState(() => query = value.trim()),
               decoration: InputDecoration(
-                hintText: "Search for event",
+                hintText: StringsManager.searchForEvent,
                 suffixIcon: Padding(
                   padding: const EdgeInsets.all(12),
                   child: SvgPicture.asset(
@@ -74,7 +75,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
                           onPressed: (){
 
                           },
-                          child:Text("Try Again"),
+                          child:Text(StringsManager.tryAgain),
                         )
                       ],
                     );
@@ -88,7 +89,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
                       .contains(query.toLowerCase()))
                       .toList();
                   if(events.isEmpty){
-                    return Center(child: Text("No events found",style: Theme.of(context).textTheme.bodyMedium,),);
+                    return Center(child: Text(StringsManager.noEventsFound,style: Theme.of(context).textTheme.bodyMedium,),);
                   }
                   return ListView.separated(
                     itemBuilder:(context, index) => EventCard(event: events[index]) ,

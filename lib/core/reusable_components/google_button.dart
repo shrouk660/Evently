@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
 import '../resources/assets_manager.dart';
 
 class GoogleButton extends StatelessWidget {

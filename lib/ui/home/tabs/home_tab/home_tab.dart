@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently/core/resources/assets_manager.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:evently/providers/themes_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/ui/home/tabs/home_tab/tabs/all_view.dart';
@@ -16,14 +18,14 @@ import 'package:provider/provider.dart';
 import '../../../../core/reusable_components/category_chip.dart';
 import '../../../../model/event_categories.dart';
 
-
-
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
-  static final categories = EventCategories.withAll;
+
 
   @override
   Widget build(BuildContext context) {
+    context.locale;
+    final categories = EventCategories.withAll;
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
     return DefaultTabController(
@@ -40,7 +42,7 @@ class HomeTab extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Welcome Back ✨",style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        Text(StringsManager.welcomeBack,style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontSize: 14,
                         ),),
                         userProvider.user == null
@@ -77,12 +79,18 @@ class HomeTab extends StatelessWidget {
                       ),
                       SizedBox(width: 4,),
                       LanguageSwitch(
-                        title: "EN",
-                        languageCode: "en",
-                        selectedLanguage: "en",
+                        title: context.locale.languageCode == 'en' ? "EN" : "AR",
+                        languageCode: context.locale.languageCode,
+                        selectedLanguage: context.locale.languageCode,
                         height: 32,
                         widgh: 32,
-                      )
+                        onClicked: () async {
+                          final newLocale = context.locale.languageCode == 'en'
+                              ? const Locale('ar')
+                              : const Locale('en');
+                          await context.setLocale(newLocale);
+                        },
+                      ),
                     ],
                   ),
                 ],
@@ -103,7 +111,7 @@ class HomeTab extends StatelessWidget {
                       splashFactory: NoSplash.splashFactory,
                       overlayColor:
                       WidgetStateProperty.all(Colors.transparent),
-                      labelPadding: const EdgeInsets.only(right: 8),
+                      labelPadding: const EdgeInsetsDirectional.only(end: 8),
                       tabs: List.generate(
                         categories.length,
                             (i) => Tab(

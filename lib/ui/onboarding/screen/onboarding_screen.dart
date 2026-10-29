@@ -6,6 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/resources/assets_manager.dart';
 import '../../../core/resources/routes_manager.dart';
+import '../../../core/resources/string_manager.dart';
 import '../../../core/reusable_components/custom_button.dart';
 import '../../../model/onboarding_model.dart';
 
@@ -89,7 +90,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
                 child: Text(
-                  "Skip",
+                  StringsManager.skip,
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
               ),
@@ -157,7 +158,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             CustomButton(
-              title: isLast ? "Get started" : "Next",
+              title: isLast ? StringsManager.getStarted :StringsManager.next,
               onClick: next,
             ),
             SizedBox(height: screenHeight * 0.02),

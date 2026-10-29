@@ -1,3 +1,4 @@
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:flutter/material.dart';
 
 class Ordivider extends StatelessWidget {
@@ -10,7 +11,7 @@ class Ordivider extends StatelessWidget {
         Expanded(child: Divider(color: Theme.of(context).colorScheme.secondary,)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text("Or", style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          child: Text(StringsManager.or, style: Theme.of(context).textTheme.labelSmall?.copyWith(
             fontWeight: .w600
           )
 

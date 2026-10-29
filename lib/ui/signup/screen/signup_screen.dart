@@ -68,11 +68,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 CustomField(
                   validation: (value) {
                     if(value==null || value.isEmpty){
-                      return "Name can't empty";
+                      return StringsManager.nameCantEmpty;
                     }
                     return null;
                   },
-                  hint: "Enter your name",
+                  hint: StringsManager.enterYourName,
                   prefixPath: AssetsManager.profile,
                   controller: nameController,
                   keyboard: TextInputType.name,
@@ -81,14 +81,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 CustomField(
                   validation: (value) {
                     if(value==null || value.isEmpty){
-                      return "Email can't empty";
+                      return StringsManager.emailCantEmpty;
                     }
                     if(!RegExp(AppConstants.emailRegex).hasMatch(value)){
-                      return "Invalid email";
+                      return StringsManager.invalidEmail;
                     }
                     return null;
                   },
-                  hint: "Enter your email",
+                  hint: StringsManager.enterYourEmail,
                   prefixPath: AssetsManager.email,
                   controller: emailController,
                   keyboard: TextInputType.emailAddress,
@@ -97,15 +97,15 @@ class _SignupScreenState extends State<SignupScreen> {
                 CustomField(
                   validation: (value) {
                     if(value==null || value.isEmpty){
-                      return "Password can't empty";
+                      return StringsManager.passwordCantEmpty;
                     }
                     if(value.length<8){
-                      return "Password can't be less than 8 characters";
+                      return StringsManager.passwordCantBeLessThan8Characters;
                     }
                     return null;
                   },
                   isPassword: true,
-                  hint: "Enter your password",
+                  hint: StringsManager.enterYourPassword,
                   prefixPath: AssetsManager.lock,
                   controller: passController,
                   keyboard: TextInputType.text,
@@ -115,18 +115,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   isPassword: true,
                   validation: (value) {
                     if(value != passController.text){
-                      return "Passwords don't match";
+                      return StringsManager.passwordsDontMatch;
                     }
                     return null;
                   },
-                  hint: "Confirm your password",
+                  hint: StringsManager.confirmYourPassword,
                   prefixPath: AssetsManager.lock,
                   controller: confirmPassController,
                   keyboard: TextInputType.text,
                 ),
                 SizedBox(height: 52,),
 
-                CustomButton(title: "Sign Up", onClick: () {
+                CustomButton(title: StringsManager.signUp, onClick: () {
                   if(formKey.currentState?.validate()??false){
                     createNeweAccount();
                   }
@@ -135,7 +135,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already have an account?",style: Theme
+                    Text(StringsManager.alreadyHaveAnAccount,style: Theme
                         .of(context)
                         .textTheme
                         .bodySmall?.copyWith(
@@ -148,7 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: (){
                           Navigator.of(context).pushReplacementNamed(RoutesManager.signin);
                         },
-                        child: Text("Login",style:Theme.of(context).textTheme.titleSmall)
+                        child: Text(StringsManager.login,style:Theme.of(context).textTheme.titleSmall)
                     ),
                   ],
                 ),
@@ -156,7 +156,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 Ordivider(),
                 SizedBox(height: 20,),
                 GoogleButton(
-                  title: "Sign up with Google",
+                  title: StringsManager.signUpWithGoogle,
                   onClick: googleSignIn,
                 )
 
@@ -187,10 +187,10 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.of(context).pushReplacementNamed(RoutesManager.Home);
     }on FirebaseAuthException catch (e){
       Navigator.of(context).pop();
-      if (e.code == "weak-password") {
-        DialodUtils.showMassageDialog(context: context, content: "The password provided is too weak.");
-      } else if (e.code == "email-already-in-use") {
-        DialodUtils.showMassageDialog(context: context, content: "The account already exists for that email.");
+      if (e.code == StringsManager.weakPassword) {
+        DialodUtils.showMassageDialog(context: context, content: StringsManager.thePasswordProvidedIsTooWeak);
+      } else if (e.code == StringsManager.emailAlreadyInUse) {
+        DialodUtils.showMassageDialog(context: context, content: StringsManager.theAccountAlreadyExistsForThatEmail);
       }
 
     } catch(e){
@@ -209,7 +209,7 @@ class _SignupScreenState extends State<SignupScreen> {
       if (!mounted) return;
       DialodUtils.showMassageDialog(
         context: context,
-        content: "Google sign up failed",
+        content: StringsManager.googleSignUpFailed,
       );
       print(e.toString());
     }

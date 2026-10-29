@@ -27,6 +27,7 @@ class ArrowIcon extends StatelessWidget {
         icon,
         width: 20,
         height: 20,
+        matchTextDirection: true,
         colorFilter: ColorFilter.mode(
           iconColor ?? Theme.of(context).colorScheme.primary,
           BlendMode.srcIn,

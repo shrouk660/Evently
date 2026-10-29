@@ -6,10 +6,12 @@ class LanguageSwitch extends StatelessWidget {
   final String selectedLanguage;
   final double? height;
   final double? widgh;
+  final void Function() onClicked;
   const LanguageSwitch({
     super.key,
     this.height,
     this.widgh,
+    required this.onClicked,
     required this.title,
     required this.languageCode,
     required this.selectedLanguage
@@ -29,7 +31,7 @@ class LanguageSwitch extends StatelessWidget {
               ?Theme.of(context).colorScheme.primary
               :Theme.of(context).colorScheme.onPrimaryContainer,
         ),
-        onPressed: () {},
+        onPressed: onClicked,
         child: Text(title, style: languageCode == selectedLanguage
             ?Theme.of(context).textTheme.labelMedium
             :Theme.of(context).textTheme.labelSmall),

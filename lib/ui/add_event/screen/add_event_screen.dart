@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/core/remote/network/firestore_manager.dart';
 import 'package:evently/core/resources/dialod_utils.dart';
+import 'package:evently/core/resources/string_manager.dart';
 import 'package:evently/core/reusable_components/arrow_icon.dart';
 import 'package:evently/core/reusable_components/time.dart';
 import 'package:evently/model/event_model.dart';
@@ -24,7 +25,7 @@ class AddEventScreen extends StatefulWidget {
 
 class _AddEventScreenState extends State<AddEventScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  static const categories = EventCategories.all;
+  static  List<EventCategory> get  categories => EventCategories.all;
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   int selectedTap = 0;
@@ -79,7 +80,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
+          padding: const EdgeInsetsDirectional.only(start: 16),
           child: ArrowIcon(
               onClick: (){
                 Navigator.of(context).pop();
@@ -87,7 +88,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               icon:  AssetsManager.arrowLeft,
           ),
         ),
-        title: Text("Add event",
+        title: Text(StringsManager.addEvent,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
         ),
       ),
@@ -163,7 +164,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                          },
                        ),
                        const SizedBox(height: 16),
-                       Text("Title", style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                       Text(StringsManager.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(
                            fontWeight: .w500,
                            fontSize: 16
                        )),
@@ -172,15 +173,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
                          controller: titleController,
                          validation: (value) {
                            if (value == null || value.trim().isEmpty) {
-                             return "Title can't be empty";
+                             return StringsManager.titleCantBeEmpty;
                            }
                            return null;
                          },
-                         hint: "Event Title",
+                         hint: StringsManager.eventTitle,
                          keyboard: TextInputType.text,
                        ),
                        const SizedBox(height: 16),
-                       Text("Description", style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                       Text(StringsManager.description, style: Theme.of(context).textTheme.titleMedium?.copyWith(
                            fontWeight: .w500,
                            fontSize: 16
                        )),
@@ -189,11 +190,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
                          controller: descriptionController,
                          validation: (value) {
                            if (value == null || value.trim().isEmpty) {
-                             return "Description can't be empty";
+                             return StringsManager.descriptionCantBeEmpty;
                            }
                            return null;
                          },
-                         hint: "Event Description...",
+                         hint: StringsManager.eventDescription,
                          keyboard: TextInputType.multiline,
                          maxLines: 5,
                        ),
@@ -203,7 +204,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                        Time(onTimeSelected: (t) => selectedTime = t),
                        const SizedBox(height: 24),
                        CustomButton(
-                         title: "Add event",
+                         title: StringsManager.addEvent,
                          onClick: (){
                            addEvent();
                          } ,
